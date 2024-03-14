@@ -1,23 +1,9 @@
 # Grader GUI
 
-## How to Install
-### Windows
-- Download files [here](https://storage.googleapis.com/farismnrr-gclouds.appspot.com/grader-gui.exe)
-- Run the executable files
-### Linux
+## How to Install in Windows
 - Clone this repository
 ```bash
 git clone https://github.com/farismnrr/Grader-GUI.git
 ```
-- Change the directory
-```bash
-cd Grader-GUI
-```
-- Make the file executable
-```bash
-chmod +x grader-gui.sh
-```
-- Run the executable file
-```bash
-./grader-gui.sh
-```
+- Edit user environment variable ([See here](https://docs.google.com/document/d/1XeJsLJ513wDVu-WI8Kgl2nLSIOejniww-Ewz6KMlmcI/edit?usp=sharing))
+- Run grader-gui.exe
