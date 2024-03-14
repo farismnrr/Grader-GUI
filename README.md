@@ -2,7 +2,7 @@
 
 ## How to Install
 ### Windows
-- Download files [here](https://www.google.com)
+- Download files [here](https://storage.googleapis.com/farismnrr-gclouds.appspot.com/grader-gui.exe)
 - Run the executable files
 ### Linux
 - Clone this repository
