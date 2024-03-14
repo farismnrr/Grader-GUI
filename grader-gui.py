@@ -75,7 +75,7 @@ def show_current_directory():
 def create_buttons():
     root = Tk()
     root.title("Grader GUI")
-    root.iconbitmap('icon.ico')
+    root.iconbitmap('./icon.ico')
 
     # Menetapkan ikon
     # icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')  # Path ke file ikon
