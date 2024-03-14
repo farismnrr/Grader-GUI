@@ -74,7 +74,13 @@ def show_current_directory():
 # Fungsi untuk membuat dan menampilkan tombol-tombol
 def create_buttons():
     root = Tk()
-    root.title("Menu")
+    root.title("Grader GUI")
+    root.iconbitmap('icon.ico')
+
+    # Menetapkan ikon
+    # icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')  # Path ke file ikon
+    # if os.path.exists(icon_path):  # Memeriksa apakah file ikon ada
+    #     root.iconbitmap(icon_path)  # Menetapkan ikon untuk jendela utama
 
     # Frame untuk mengelompokkan tombol-tombol
     button_frame = Frame(root)
