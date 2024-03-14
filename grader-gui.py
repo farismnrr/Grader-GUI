@@ -1,6 +1,6 @@
 import os
 import subprocess
-from tkinter import Tk, Button, Frame, Text, messagebox
+from tkinter import Tk, Button, Frame, Text, messagebox, simpledialog
 from tkinter.filedialog import askdirectory
 import re
 
@@ -44,6 +44,33 @@ def submit_program(result_text):
     result_text.insert("end", remove_ansi_escape_sequences(result.stdout) + "\n")
     result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
 
+# Fungsi untuk mengeksekusi perintah pull assignment
+def pull_assignment(result_text):
+    # Meminta input dari pengguna
+    assignment_name = simpledialog.askstring("Pull Assignment", "Masukkan nama assignment:")
+    if assignment_name is not None and assignment_name.strip():  # Validasi teks tidak kosong
+        # Mengonfigurasi teks untuk hasil
+        result_text.config(state="normal")  # Mengaktifkan area teks
+        result_text.insert("end", f"Pulling assignment: {assignment_name}\n")
+        
+        # Memeriksa apakah input adalah URL
+        if assignment_name.startswith("https://dendrite.ruangguru.com/asg/"):
+            # Menghapus bagian URL yang tidak relevan
+            assignment_name = assignment_name.replace("https://dendrite.ruangguru.com/asg/", "")
+        
+        # Menjalankan perintah grader-cli assignment pull
+        result = subprocess.run(["grader-cli", "assignment", "pull", assignment_name], capture_output=True, text=True, shell=True)
+        
+        # Memasukkan hasil perintah ke dalam area teks
+        result_text.insert("end", remove_ansi_escape_sequences(result.stdout) + "\n")
+        result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
+    elif assignment_name == "":  # Menangani kasus ketika pengguna membatalkan dialog
+        # Jika pengguna membatalkan input, tampilkan pesan
+        messagebox.showinfo("Info", "Input tidak boleh kosong.")
+    else:
+        # Jika pengguna membatalkan input, tampilkan pesan
+        messagebox.showinfo("Info", "Operasi dibatalkan.")
+
 # Fungsi untuk membuka VS Code pada direktori saat ini
 def open_vscode(result_text):
     result_text.config(state="normal")  # Mengaktifkan kembali area teks
@@ -71,16 +98,11 @@ def show_current_directory():
     current_directory = os.getcwd()
     messagebox.showinfo("Current Directory", f"Direktori saat ini: {current_directory}")
 
-# Fungsi untuk membuat dan menampilkan tombol-tombol
+# Fungsi untuk membuat tombol-tombol
 def create_buttons():
     root = Tk()
     root.title("Grader GUI")
     root.iconbitmap('./icon.ico')
-
-    # Menetapkan ikon
-    # icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')  # Path ke file ikon
-    # if os.path.exists(icon_path):  # Memeriksa apakah file ikon ada
-    #     root.iconbitmap(icon_path)  # Menetapkan ikon untuk jendela utama
 
     # Frame untuk mengelompokkan tombol-tombol
     button_frame = Frame(root)
@@ -109,6 +131,10 @@ def create_buttons():
     # Tombol untuk submit program
     submit_button = Button(button_frame, text="Submit Program", command=lambda: submit_program(result_text), width=20, height=2)
     submit_button.pack(pady=5)
+
+    # Tombol untuk pull assignment
+    pull_assignment_button = Button(button_frame, text="Pull Assignment", command=lambda: pull_assignment(result_text), width=20, height=2)
+    pull_assignment_button.pack(pady=5)
 
     # Tombol untuk membuka VS Code
     open_vscode_button = Button(button_frame, text="Open VS Code", command=lambda: open_vscode(result_text), width=20, height=2)
