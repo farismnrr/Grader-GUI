@@ -71,6 +71,16 @@ def pull_assignment(result_text):
         # Jika pengguna membatalkan input, tampilkan pesan
         messagebox.showinfo("Info", "Operasi dibatalkan.")
 
+def clear_terminal(result_text):
+    # Mengaktifkan kembali area teks
+    result_text.config(state="normal")
+    
+    # Menghapus seluruh teks dari awal sampai akhir
+    result_text.delete("1.0", "end")
+    
+    # Menonaktifkan area teks kembali setelah selesai
+    result_text.config(state="disabled")
+
 # Fungsi untuk membuka VS Code pada direktori saat ini
 def open_vscode(result_text):
     result_text.config(state="normal")  # Mengaktifkan kembali area teks
@@ -78,7 +88,7 @@ def open_vscode(result_text):
     result = subprocess.run(["code", "."], capture_output=True, text=True, shell=True)
     result_text.insert("end", remove_ansi_escape_sequences(result.stdout) + "\n")
     result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
-    
+
 # Fungsi untuk membuka File Explorer dan memilih direktori
 def choose_directory():
     root = Tk()
@@ -136,6 +146,10 @@ def create_buttons():
     pull_assignment_button = Button(button_frame, text="Pull Assignment", command=lambda: pull_assignment(result_text), width=20, height=2)
     pull_assignment_button.pack(pady=5)
 
+    # Tombol untuk menghapus test pada console
+    clear_terminal_botton = Button(button_frame, text="Clear Console", command=lambda: clear_terminal(result_text), width=20, height=2)
+    clear_terminal_botton.pack(pady=5)
+    
     # Tombol untuk membuka VS Code
     open_vscode_button = Button(button_frame, text="Open VS Code", command=lambda: open_vscode(result_text), width=20, height=2)
     open_vscode_button.pack(pady=5)
