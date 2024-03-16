@@ -146,7 +146,7 @@ def create_buttons():
     pull_assignment_button = Button(button_frame, text="Pull Assignment", command=lambda: pull_assignment(result_text), width=20, height=2)
     pull_assignment_button.pack(pady=5)
 
-    # Tombol untuk menghapus test pada console
+    # Tombol untuk menghapus text pada console
     clear_terminal_botton = Button(button_frame, text="Clear Console", command=lambda: clear_terminal(result_text), width=20, height=2)
     clear_terminal_botton.pack(pady=5)
     
