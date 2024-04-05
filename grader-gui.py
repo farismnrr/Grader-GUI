@@ -1,8 +1,9 @@
 import os
 import subprocess
+import threading
 from tkinter import Tk, Button, Frame, Text, messagebox, simpledialog
 from tkinter.filedialog import askdirectory
-import re
+import re, time
 
 # Fungsi untuk membersihkan ANSI escape sequences dari teks
 def remove_ansi_escape_sequences(text):
@@ -29,12 +30,41 @@ def my_group(result_text):
     result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
 
 # Fungsi untuk menjalankan perintah grader-cli test
-def test_program(result_text):
+def test_program_grader(result_text):
     result_text.config(state="normal")  # Mengaktifkan kembali area teks
-    result_text.insert("end", "Testing program...\n")
+    result_text.insert("end", "Testing program with grader...\n")
     result = subprocess.run(["grader-cli", "test"], capture_output=True, text=True, shell=True)
     result_text.insert("end", remove_ansi_escape_sequences(result.stdout) + "\n")
     result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
+
+def test_program_golang(result_text):
+    result_text.config(state="normal")  # Mengaktifkan kembali area teks
+    result_text.insert("end", "Testing golang program...\n")
+    
+    # Membuka proses dan mengeksekusi perintah "go run main.go"
+    process = subprocess.Popen(["go", "run", "main.go"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    
+    # Menampilkan output dari proses
+    stdout, stderr = process.communicate()
+    result_text.insert("end", stdout)
+    result_text.insert("end", stderr)
+    
+    result_text.insert("end", "Program telah dijalankan.\n")
+    result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
+    
+def test_program_golang_terminal(result_text):
+    result_text.config(state="normal")
+    result_text.insert("end", "Testing program with golang...\n")
+
+    try:
+        # Membuka PowerShell di jendela baru dan menyimpan id prosesnya
+        subprocess.Popen(["powershell", "-Command", "start-process", "powershell", "-ArgumentList", "'-NoExit','-Command','go run main.go'"], shell=True)
+        
+        result_text.insert("end", "Program execution completed.\n")
+    except subprocess.CalledProcessError as e:
+        result_text.insert("end", f"Error: {e}\n")
+
+    result_text.config(state="disabled") # Menonaktifkan area teks kembali setelah selesai
 
 # Fungsi untuk menjalankan perintah grader-cli submit
 def submit_program(result_text):
@@ -134,10 +164,18 @@ def create_buttons():
     my_group_button = Button(button_frame, text="My Group", command=lambda: my_group(result_text), width=20, height=2)
     my_group_button.pack(pady=5)
 
-    # Tombol untuk test program
-    test_button = Button(button_frame, text="Test Program", command=lambda: test_program(result_text), width=20, height=2)
+    # Tombol untuk test program with grader
+    test_button = Button(button_frame, text="Test Program (Grader)", command=lambda: test_program_grader(result_text), width=20, height=2)
+    test_button.pack(pady=5)
+    
+    # Tombol untuk test program with golang
+    test_button = Button(button_frame, text="Test Program (Golang)", command=lambda: test_program_golang(result_text), width=20, height=2)
     test_button.pack(pady=5)
 
+    # Tombol untuk test program with golang terminal
+    test_button = Button(button_frame, text="Test Program (Terminal)", command=lambda: test_program_golang_terminal(result_text), width=20, height=2)
+    test_button.pack(pady=5)
+    
     # Tombol untuk submit program
     submit_button = Button(button_frame, text="Submit Program", command=lambda: submit_program(result_text), width=20, height=2)
     submit_button.pack(pady=5)
