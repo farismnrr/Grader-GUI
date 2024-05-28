@@ -119,7 +119,6 @@ def open_vscode(result_text):
     result_text.insert("end", remove_ansi_escape_sequences(result.stdout) + "\n")
     result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
 
-<<<<<<< HEAD
 def clear_terminal(result_text):
     result_text.config(state="normal")  # Mengaktifkan kembali area teks
     
@@ -128,8 +127,6 @@ def clear_terminal(result_text):
     
     result_text.config(state="disabled")  # Menonaktifkan area teks kembali setelah selesai
 
-=======
->>>>>>> master
 # Fungsi untuk membuka File Explorer dan memilih direktori
 def choose_directory():
     root = Tk()
@@ -195,15 +192,9 @@ def create_buttons():
     pull_assignment_button = Button(button_frame, text="Pull Assignment", command=lambda: pull_assignment(result_text), width=20, height=2)
     pull_assignment_button.pack(pady=5)
 
-<<<<<<< HEAD
     # Tombol untuk clear console
     clear_terminal_button = Button(button_frame, text="Clear Console", command=lambda: clear_terminal(result_text), width=20, height=2)
     clear_terminal_button.pack(pady=5)
-=======
-    # Tombol untuk menghapus text pada console
-    clear_terminal_botton = Button(button_frame, text="Clear Console", command=lambda: clear_terminal(result_text), width=20, height=2)
-    clear_terminal_botton.pack(pady=5)
->>>>>>> master
     
     # Tombol untuk membuka VS Code
     open_vscode_button = Button(button_frame, text="Open VS Code", command=lambda: open_vscode(result_text), width=20, height=2)
